@@ -1,11 +1,8 @@
 {
   "name": "pokemontcg-image-downloader",
   "version": "1.0.0",
-  "description": "Simple way to download images",
+  "description": "Simple way to download images of pokemontcg",
   "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "author": "Samuel Middendorp, github.com/SamuelMiddendorp",
   "license": "ISC",
   "dependencies": {
