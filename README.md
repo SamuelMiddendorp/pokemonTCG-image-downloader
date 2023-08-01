@@ -15,10 +15,6 @@ Installation is very easy, the script uses AXIOS and FSE to make requests and wr
 
 You should have Node and NPM installed.
 
-  ```sh
-  npm install npm@latest -g
-  ```
-
 ### Installation
 
 1. Clone the repo
