@@ -2,9 +2,9 @@ const axios = require('axios');
 const fse = require('fs-extra');
 
 const getImagesFromSet = async (set, useLargeImages) => {
-
     // Inititalize here
     let images = []
+
     const data = await doRequest(formulatePaginatedRequest(1, set));
 
     images = images.concat(data.data)
@@ -13,11 +13,10 @@ const getImagesFromSet = async (set, useLargeImages) => {
         const data = await doRequest(formulatePaginatedRequest(2, set));
         images = images.concat(data.data);
     }
-    // For now small images are returned
+
     return images.map(x => useLargeImages ? x.images.large : x.images.small);
 }
 const doRequest = async (url) => {
-
     const { data } = await axios.get(url);
 
     if (data.data.length == 0) {
@@ -31,7 +30,6 @@ const formulatePaginatedRequest = (page, set) => {
 }
 
 const main = async () => {
-
     console.log("Thanks for using this tool, be mindfull when running large exports since images take quite some bandwidth!\nPress CTRL + c to stop at anytime");
     
     const setId = process.argv[2] || "";
@@ -45,7 +43,6 @@ const main = async () => {
     const images = await getImagesFromSet(setId, useLargeImages);
 
     for (var i = 0; i < images.length; i++) {
-
         let image = images[i];
         // Read image as data
         const res = await axios.get(image, {
