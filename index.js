@@ -17,7 +17,9 @@ const getImagesFromSet = async (set, useLargeImages) => {
     return images.map(x => useLargeImages ? x.images.large : x.images.small);
 }
 const doRequest = async (url) => {
-    const { data } = await axios.get(url);
+    const {
+        data
+    } = await axios.get(url);
 
     if (data.data.length == 0) {
         throw new Error("Api call yielded no results, is the setId correct?");
@@ -31,7 +33,7 @@ const formulatePaginatedRequest = (page, set) => {
 
 const main = async () => {
     console.log("Thanks for using this tool, be mindfull when running large exports since images take quite some bandwidth!\nPress CTRL + c to stop at anytime");
-    
+
     const setId = process.argv[2] || "";
     const useLargeImages = process.argv[3] || false;
 
@@ -44,17 +46,24 @@ const main = async () => {
 
     for (var i = 0; i < images.length; i++) {
         let image = images[i];
-        // Read image as data
-        const res = await axios.get(image, {
-            responseType: 'arraybuffer'
-        });
-        // Get correct folder and file name from image url
-        const outputPath = image.split("pokemontcg.io/")[1];
 
-        console.log(`Writing file: ${outputPath}`);
-        // fse outputfile is used to leverage the same file structure of the source files. It creates folders if they do not exist
-        // normal fs writefile will not do this.
-        fse.outputFile(outputPath, res.data);
+        // Read image as data
+        axios.get(image, {
+            responseType: 'arraybuffer'
+        })
+        .then(response => {
+            // Get correct folder and file name from image url
+            const outputPath = image.split("pokemontcg.io/")[1];
+
+            console.log(`Writing file: ${outputPath}`);
+            // fse outputfile is used to leverage the same file structure of the source files. It creates folders if they do not exist
+            // normal fs writefile will not do this.
+            fse.outputFile(outputPath, response.data);
+        })
+        .catch(_ => {
+            console.log(`Cannot get card: ${image}, maybe it is missing in source`);
+        });
+
     }
 }
 main();
